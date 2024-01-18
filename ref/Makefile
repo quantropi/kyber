@@ -31,7 +31,10 @@ all: \
   test_kex1024-90s \
   test_vectors512-90s \
   test_vectors768-90s \
-  test_vectors1024-90s
+  test_vectors1024-90s \
+  PQCgenKAT_kem512 \
+  PQCgenKAT_kem768 \
+  PQCgenKAT_kem1024
 
 speed: \
   test_speed512 \
@@ -151,14 +154,14 @@ test_speed768-90s: $(SOURCESNINETIES) $(HEADERSNINETIES) cpucycles.h cpucycles.c
 test_speed1024-90s: $(SOURCESNINETIES) $(HEADERSNINETIES) cpucycles.h cpucycles.c speed_print.h speed_print.c test_speed.c randombytes.c
 	$(CC) $(CFLAGS) -D KYBER_90S -DKYBER_K=4 $(SOURCESNINETIES) randombytes.c cpucycles.c speed_print.c test_speed.c -o test_speed1024-90s
 
-PQCgenKAT_kem512: $(SOURCESKECCAK) $(HEADERSKECCAK) PQCgenKAT_kem.c rng.c rng.h
-	$(CC) $(NISTFLAGS) -DKYBER_K=2 -o $@ $(SOURCESKECCAK) rng.c PQCgenKAT_kem.c $(LDFLAGS) -lcrypto
+PQCgenKAT_kem512: $(SOURCESKECCAK) $(HEADERSKECCAK) PQCgenKAT_kem_qa.c rng.c rng.h
+	$(CC) $(NISTFLAGS) -DKYBER_K=2 -DALGO=1 -o $@ $(SOURCESKECCAK) rng.c PQCgenKAT_kem_qa.c $(LDFLAGS) -lcrypto
 
-PQCgenKAT_kem768: $(SOURCESKECCAK) $(HEADERSKECCAK) PQCgenKAT_kem.c rng.c rng.h
-	$(CC) $(NISTFLAGS) -DKYBER_K=3 -o $@ $(SOURCESKECCAK) rng.c PQCgenKAT_kem.c $(LDFLAGS) -lcrypto
+PQCgenKAT_kem768: $(SOURCESKECCAK) $(HEADERSKECCAK) PQCgenKAT_kem_qa.c rng.c rng.h
+	$(CC) $(NISTFLAGS) -DKYBER_K=3 -DALGO=3 -o $@ $(SOURCESKECCAK) rng.c PQCgenKAT_kem_qa.c $(LDFLAGS) -lcrypto
 
-PQCgenKAT_kem1024: $(SOURCESKECCAK) $(HEADERSKECCAK) PQCgenKAT_kem.c rng.c rng.h
-	$(CC) $(NISTFLAGS) -DKYBER_K=4 -o $@ $(SOURCESKECCAK) rng.c PQCgenKAT_kem.c $(LDFLAGS) -lcrypto
+PQCgenKAT_kem1024: $(SOURCESKECCAK) $(HEADERSKECCAK) PQCgenKAT_kem_qa.c rng.c rng.h
+	$(CC) $(NISTFLAGS) -DKYBER_K=4 -DALGO=5 -o $@ $(SOURCESKECCAK) rng.c PQCgenKAT_kem_qa.c $(LDFLAGS) -lcrypto
 
 PQCgenKAT_kem512-90s: $(SOURCESNINETIES) $(HEADERSNINETIES) PQCgenKAT_kem.c rng.c rng.h
 	$(CC) $(NISTFLAGS) -DKYBER_K=2 -DKYBER_90S -o $@ $(SOURCESNINETIES) rng.c PQCgenKAT_kem.c $(LDFLAGS) -lcrypto
